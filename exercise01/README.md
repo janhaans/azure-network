@@ -1,10 +1,17 @@
 # Scope
 
-- ResourceGroup: name = CharisTechRG, region = east US
-- VNET: name = CoreServicesVNet, IP space = 10.10.0.0/16
+ResourceGroup: name = CharisTechRG, region = east US
+
+VNET: name = CoreServicesVNet, IP space = 10.10.0.0/16
+
 - Subnet: name = SharedServicesSubnet, IP space = 10.10.1.0/24
 - Subnet: name = DatabaseSubnet, IP space = 10.10.2.0/24
 - Subnet: name = PublicWebServiceSubnet, IP space = 10.10.3.0/24
+
+VNet: name = EngineeringVNet, IPv4 = 10.20.0.0/16, IPv6 = fd00:db8:deca::/48
+
+- Subnet: name = EngSubnet1, IPv4 = 10.20.1.0/24, IPv6 = fd00:db8:deca:1::/64
+- Subnet: name = EngSubnet2, IPv4 = 10.20.2.0/24, IPv6 = fd00:db8:deca:2::/64
 
 # Login Azure subsrciption
 
@@ -34,6 +41,12 @@ When everything is OK, you can deploy:
 
 ```
 az deployment sub create --name CharisTechDeployment --location eastus --template-file main.bicep
+```
+
+# Verify
+
+```
+az network VNet list --resource-group CharisTechRG --output table
 ```
 
 # Delete
