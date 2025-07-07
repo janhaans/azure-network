@@ -29,3 +29,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
     }]
   }
 }
+
+
+// Output the subnet resource IDs for use in other modules
+output subnetResourceIds array = [for (subnet, i) in subnets: vnet.properties.subnets[i].id]

@@ -6,6 +6,17 @@ targetScope = 'subscription'
 // --- General Parameters ---
 param resourceGroupName string = 'CharisTechRG'
 param location string = 'eastus'
+param vmSize string = 'Standard_B2s'
+param adminUsername string = 'azureuser'
+// SSH Public Key for the VM
+param sshPublicKey string = 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF3g3P9JLE/8cmgUDMGgVKt2YChHl8Ms1pgzXLXqgHrb jan.haans@gmail.com'
+// VM Image information
+param ubuntuImage object = {
+  publisher: 'Canonical'
+  offer: '0001-com-ubuntu-server-jammy'
+  sku: '22_04-lts-gen2'
+  version: 'latest'
+}
 
 // --- CoreServicesVNet Parameters ---
 param coreVnetName string = 'CoreServicesVNet'
@@ -48,6 +59,14 @@ param engineeringVnetSubnets array = [
   }
 ]
 
+// --- VM01 Parameters ---
+param vmName01 string = 'WebVM01'
+
+// --- VM01 Parameters ---
+param vmName02 string = 'WebVM02'
+// Static IP for the second VM
+param vm02StaticIP string = '10.10.3.10'
+
 // Create the resource group
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
@@ -85,4 +104,37 @@ module engineeringNetwork 'network.bicep' = {
   dependsOn: [
     rg
   ]
+}
+
+// Create the Virtual Machine using the new vm module
+module vm 'vm.bicep' = {
+  name: 'vmDeployment'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    location: location
+    vmName: vmName01
+    vmSize: vmSize
+    adminUsername: adminUsername
+    sshPublicKey: sshPublicKey
+    vmImage: ubuntuImage
+    // Get the subnet ID from the output of the coreNetwork module
+    subnetId: coreNetwork.outputs.subnetResourceIds[2]
+  }
+}
+
+// Create the second Virtual Machine (New)
+module vm2 'vm.bicep' = {
+  name: 'vm2Deployment'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    location: location
+    vmName: vmName02
+    vmSize: vmSize
+    adminUsername: adminUsername
+    sshPublicKey: sshPublicKey
+    vmImage: ubuntuImage
+    subnetId: coreNetwork.outputs.subnetResourceIds[2]
+    // Pass the static IP address to the module
+    staticPrivateIPAddress: vm02StaticIP
+  }
 }
