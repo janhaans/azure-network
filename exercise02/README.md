@@ -26,7 +26,7 @@ az account set --subscription "Your Subscription Name or ID"
 Before deployment validate the Bicep files. The `what-if` operation allows you to preview the changes that will be made to your environment without actually applying them.
 
 ```
-az deployment sub what-if --name exercise02 --location westeurope --template-file main.bicep
+az deployment sub what-if --name <deployment name> --location <region> --template-file <name bicep template>
 ```
 
 When you run this command, the Azure CLI will compile your Bicep file and compare the desired state with the current state of your Azure resources. It will then output a summary showing which resources will be created, modified, or deleted. This is an excellent way to catch errors and verify that your template will do exactly what you expect before you run the actual deployment.
@@ -34,5 +34,20 @@ When you run this command, the Azure CLI will compile your Bicep file and compar
 When everything is OK, you can deploy:
 
 ```
-az deployment sub create --name exercise02 --location westeurope --template-file main.bicep
+az deployment sub create --name <deployment name> --location <region> --template-file <naame bicep template>
 ```
+
+### 1. Deploy RG (subscription scope, incremental)
+
+az deployment sub create \
+ --template-file main.bicep \
+ --location westeurope \
+ --parameters main.bicepparam
+
+### 2. Deploy VNet/subnets (resource group scope, complete (remove resource not in template))
+
+az deployment group create \
+ --resource-group demo-rg \
+ --template-file rg/networking-main.bicep \
+ --parameters rg/networking-main.bicepparam \
+ --mode Complete
