@@ -37,17 +37,21 @@ When everything is OK, you can deploy:
 az deployment sub create --name <deployment name> --location <region> --template-file <naame bicep template>
 ```
 
-### 1. Deploy RG (subscription scope, incremental)
+### Deploy RG (subscription scope, incremental)
 
+```
 az deployment sub create \
  --template-file main.bicep \
  --location westeurope \
  --parameters main.bicepparam
+```
 
-### 2. Deploy VNet/subnets (resource group scope, complete (remove resource not in template))
+### Deploy VNet/subnets (resource group scope, complete (remove resource not in template))
 
+```
 az deployment group create \
  --resource-group demo-rg \
  --template-file rg/networking-main.bicep \
  --parameters rg/networking-main.bicepparam \
  --mode Complete
+```
