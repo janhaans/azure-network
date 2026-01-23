@@ -2,10 +2,12 @@
 
 Create in resource group `demo-rg`:
 
-- Vnet `hub-vnet` (10.1.0.0/16) and subnet `hub-subnet1` (10.1.1.0/24)
-- Vnet `spoke1-vnet` (10.2.0.0/16) and subnet `spoke1-subnet1` (10.2.1.0/24)
-- Vnet `spoke2-vnet` (10.3.0.0/16) and subnet `spoke2-subnet1` (10.3.1.0/24)
-- Vnet `spoke3-vnet` (10.4.0.0/16) and subnet `spoke3-subnet1` (10.4.1.0/24)
+- Vnet `VNet1-hub` (10.1.0.0/16) and subnet `subnet1A` (10.1.1.0/24)
+- Vnet `VNet2-spoke` (10.2.0.0/16) and subnet `subnet2A` (10.2.1.0/24)
+- Vnet `VNet3-spoke` (10.3.0.0/16) and subnet `subnet3A` (10.3.1.0/24)
+- Vnet `VNet4-spoke` (10.4.0.0/16) and subnet `subnet4A` (10.4.1.0/24)
+
+All spoke VNet's are connected with hub VNet using VNet peering.
 
 ## Login Azure subsrciption
 

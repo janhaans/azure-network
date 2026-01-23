@@ -81,3 +81,14 @@ module spokeSubnets '../modules/subnet.bicep' = [for i in range(0, spokeCount): 
     subnetPrefix: spokeSubnetPrefixes[i]
   }
 }]
+
+module hubSpokePeerings '../modules/virtualNetworkPeering.bicep' = [for i in range(0, spokeCount): {
+  name: 'hub-spoke-peering-${i}'
+  dependsOn: [
+    spokeVnets[i]
+  ]
+  params: {
+    leftVnetName: hubVnet.outputs.name
+    rightVnetName: spokeVnets[i].outputs.name
+  }
+}]
